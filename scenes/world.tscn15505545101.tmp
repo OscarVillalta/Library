@@ -1,0 +1,112 @@
+[gd_scene load_steps=18 format=3 uid="uid://biht3jir52jdy"]
+
+[ext_resource type="PackedScene" uid="uid://dxryoc725q7e0" path="res://scenes/player.tscn" id="2_rwgxs"]
+[ext_resource type="Texture2D" uid="uid://vieeafc4mn1q" path="res://assets/textures/Kenny Prototype/Dark/texture_07.png" id="3_4wyf3"]
+[ext_resource type="Material" uid="uid://bhyvai3bss2cs" path="res://resources/materials/wooden_gate.tres" id="4_71j4m"]
+[ext_resource type="PackedScene" uid="uid://c61fu5vyyux1m" path="res://assets/models/wooden_bookshelf_worn_1k.gltf/wooden_bookshelf_worn_1k.gltf" id="4_k0juu"]
+[ext_resource type="PackedScene" uid="uid://cbqj0ve5xdr26" path="res://assets/models/Book/book.glb" id="6_qfnet"]
+[ext_resource type="Texture2D" uid="uid://bikwrx3iayh3p" path="res://assets/textures/Kenny Prototype/Orange/texture_01.png" id="7_i7141"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_qfnet"]
+
+[sub_resource type="Sky" id="Sky_i7141"]
+sky_material = SubResource("ProceduralSkyMaterial_qfnet")
+
+[sub_resource type="Environment" id="Environment_k0juu"]
+background_mode = 2
+sky = SubResource("Sky_i7141")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rwgxs"]
+albedo_texture = ExtResource("3_4wyf3")
+uv1_scale = Vector3(2, 2, 2)
+uv1_triplanar = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k0juu"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_qfnet"]
+bounce = 1.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4mrxx"]
+size = Vector3(0.0765381, 0.284332, 0.217834)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qfnet"]
+size = Vector3(1.31763, 1.94894, 0.535767)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4mrxx"]
+albedo_texture = ExtResource("7_i7141")
+
+[sub_resource type="BoxMesh" id="BoxMesh_qfnet"]
+material = ExtResource("4_71j4m")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_i7141"]
+
+[node name="world" type="Node3D"]
+
+[node name="player" parent="." instance=ExtResource("2_rwgxs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.950463, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_k0juu")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0.49504, -0.672308, 0.550397, -0.0702519, 0.600418, 0.796595, 0, 9.62462, 0)
+shadow_enabled = true
+
+[node name="floor" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.93512, -1, 2.42819)
+use_collision = true
+collision_layer = 3
+collision_mask = 15
+size = Vector3(44.6288, 1, 47.8909)
+material = SubResource("StandardMaterial3D_rwgxs")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.3754, 1.11045, 0)
+material_override = ExtResource("4_71j4m")
+use_collision = true
+collision_layer = 3
+size = Vector3(5, 5, 1)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.08198, -2.83722)
+material_override = ExtResource("4_71j4m")
+use_collision = true
+material = SubResource("StandardMaterial3D_k0juu")
+
+[node name="RigidBody3D2" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.12467, 1.6697, 6.65446)
+collision_layer = 2
+collision_mask = 2
+physics_material_override = SubResource("PhysicsMaterial_qfnet")
+
+[node name="book2" parent="RigidBody3D2" instance=ExtResource("6_qfnet")]
+transform = Transform3D(-2.18557e-09, 0.05, -2.18557e-09, 0, -2.18557e-09, -0.05, -0.05, -2.18557e-09, 9.55343e-17, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.050354, -0.211472, 0.00448608)
+shape = SubResource("BoxShape3D_4mrxx")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.12467, 0.55986, 5.24806)
+collision_layer = 3
+
+[node name="wooden_bookshelf_worn_1k" parent="StaticBody3D" instance=ExtResource("4_k0juu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0157471, -1.03088, -0.00842285)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0193481)
+shape = SubResource("BoxShape3D_qfnet")
+
+[node name="RigidBody3D" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.32306, 3.15098)
+collision_layer = 3
+collision_mask = 3
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D"]
+material_override = SubResource("StandardMaterial3D_4mrxx")
+mesh = SubResource("BoxMesh_qfnet")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
+shape = SubResource("BoxShape3D_i7141")
